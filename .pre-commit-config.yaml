@@ -1,7 +1,8 @@
-- repo: local
-  hooks:
-    - id: conda-forge-only
-      name: Check channels list for conda-forge only
-      entry: python -m conda_forge_only.check_channels
-      language: python
-      files: \.(yml|yaml)$
+repos:
+  - repo: local
+    hooks:
+      - id: conda-forge-only
+        name: Check channels list for conda-forge only
+        entry: python -m conda_forge_only.check_channels
+        language: system
+        files: \.(yml|yaml)$
