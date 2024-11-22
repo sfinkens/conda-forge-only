@@ -1,7 +1,8 @@
 import pytest
 from conda_forge_only.check import check_file, check_files, ValidationError
 from contextlib import nullcontext as does_not_raise
-
+from click.testing import CliRunner
+from conda_forge_only.cli import cli
 
 def create_yaml_file(tmp_path, content, filename="test.yaml"):
     """Helper function to create a temporary YAML file."""
@@ -100,3 +101,17 @@ def test_multiple_files_pass(not_a_conda_env, valid_env):
 def test_multiple_files_fail(valid_env, invalid_env_with_extra_channels, invalid_yaml):
     checks_passed = check_files([valid_env, invalid_env_with_extra_channels, invalid_yaml, "/foo.yaml"])
     assert not all(checks_passed)
+
+
+def test_cli_pass(valid_env):
+    args = [str(valid_env)]
+    runner = CliRunner()
+    res = runner.invoke(cli, args, catch_exceptions=False)
+    assert res.exit_code == 0
+
+
+def test_cli_fail(invalid_env_with_extra_channels):
+    args = [str(invalid_env_with_extra_channels)]
+    runner = CliRunner()
+    res = runner.invoke(cli, args, catch_exceptions=False)
+    assert res.exit_code == 1
