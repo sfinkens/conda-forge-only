@@ -9,8 +9,19 @@ def create_yaml_file(tmp_path, content):
     return file_path
 
 
-def test_valid_yaml(tmp_path):
+def test_not_a_conda_env(tmp_path):
     content = """
+    foo: bar
+    """
+    file_path = create_yaml_file(tmp_path, content)
+    assert validate_channels(file_path) is True
+
+
+def test_valid_env(tmp_path):
+    content = """
+    name: myenv
+    dependencies:
+      - foo
     channels:
       - conda-forge
     """
@@ -18,8 +29,11 @@ def test_valid_yaml(tmp_path):
     assert validate_channels(file_path) is True
 
 
-def test_invalid_yaml_with_extra_channels(tmp_path):
+def test_invalid_env_with_extra_channels(tmp_path):
     content = """
+    name: myenv
+    dependencies:
+      - foo
     channels:
       - defaults
       - conda-forge
@@ -28,17 +42,21 @@ def test_invalid_yaml_with_extra_channels(tmp_path):
     assert validate_channels(file_path) is False
 
 
-def test_invalid_yaml_no_channels_key(tmp_path):
+def test_invalid_env_no_channels_key(tmp_path):
     content = """
+    name: myenv
     dependencies:
-      - numpy
+      - foo
     """
     file_path = create_yaml_file(tmp_path, content)
     assert validate_channels(file_path) is False
 
 
-def test_invalid_yaml_channels_not_a_list(tmp_path):
+def test_invalid_env_channels_not_a_list(tmp_path):
     content = """
+    name: myenv
+    dependencies:
+      - foo
     channels: conda-forge
     """
     file_path = create_yaml_file(tmp_path, content)

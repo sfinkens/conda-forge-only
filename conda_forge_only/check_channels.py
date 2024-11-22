@@ -12,22 +12,24 @@ def validate_channels(file_path):
             return False
 
     # Check that the "channels" key exists and is a list
-    if not isinstance(content, dict) or "channels" not in content:
-        print(f"No 'channels' key found in {file_path}.")
-        return False
+    is_conda_env = "name" in content and "dependencies" in content
+    if is_conda_env:
+        if "channels" not in content:
+            print(f"No 'channels' key found in {file_path}.")
+            return False
 
-    channels = content["channels"]
-    if not isinstance(channels, list):
-        print(f"'channels' in {file_path} is not a list.")
-        return False
+        channels = content["channels"]
+        if not isinstance(channels, list):
+            print(f"'channels' in {file_path} is not a list.")
+            return False
 
-    # Validate that only "conda-forge" is present
-    if set(channels) != {"conda-forge"}:
-        print(
-            f"Invalid channels found in {file_path}: {', '.join(channels)}. "
-            f"Only 'conda-forge' is allowed."
-        )
-        return False
+        # Validate that only "conda-forge" is present
+        if set(channels) != {"conda-forge"}:
+            print(
+                f"Invalid channels found in {file_path}: {', '.join(channels)}. "
+                f"Only 'conda-forge' is allowed."
+            )
+            return False
 
     return True
 
@@ -43,3 +45,7 @@ def main():
             all_valid = False
 
     sys.exit(0 if all_valid else 1)
+
+
+if __name__ == "__main__":
+    main()
