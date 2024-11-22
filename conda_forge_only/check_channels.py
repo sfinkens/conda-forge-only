@@ -11,6 +11,7 @@ def validate_channels(file_path):
             print(f"YAML parsing error in {file_path}: {exc}")
             return False
 
+    # Check that the "channels" key exists and is a list
     if not isinstance(content, dict) or "channels" not in content:
         print(f"No 'channels' key found in {file_path}.")
         return False
@@ -20,15 +21,16 @@ def validate_channels(file_path):
         print(f"'channels' in {file_path} is not a list.")
         return False
 
-    invalid_channels = [channel for channel in channels if channel != "conda-forge"]
-    if invalid_channels:
+    # Validate that only "conda-forge" is present
+    if set(channels) != {"conda-forge"}:
         print(
-            f"Invalid channels found in {file_path}: {', '.join(invalid_channels)}. "
+            f"Invalid channels found in {file_path}: {', '.join(channels)}. "
             f"Only 'conda-forge' is allowed."
         )
         return False
 
     return True
+
 
 
 def main():
