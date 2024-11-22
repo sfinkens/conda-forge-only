@@ -11,7 +11,10 @@ class ValidationError(Exception):
 
 
 def check_file(file_path):
-    """Validates that the channels list in the given file only contains 'conda-forge'."""
+    """Checks the given file.
+
+    If it looks like a conda env, check that only conda-forge channel is used.
+    """
     content = _read_yaml(file_path)
     is_conda_env = _is_conda_env(content)
     if is_conda_env:
@@ -52,6 +55,7 @@ def _check_conda_forge_only(file_path, channels):
 
 
 def check_files(files):
+    """Check multiple files."""
     checks_passed = []
     for file_path in files:
         try:

@@ -4,6 +4,7 @@ from contextlib import nullcontext as does_not_raise
 from click.testing import CliRunner
 from conda_forge_only.cli import cli
 
+
 def create_yaml_file(tmp_path, content, filename="test.yaml"):
     """Helper function to create a temporary YAML file."""
     file_path = tmp_path / filename
