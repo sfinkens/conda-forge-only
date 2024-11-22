@@ -11,7 +11,7 @@ class ValidationError(Exception):
         return f"{self.filename}: {self.error_message}"
 
 
-def validate_channels(file_path):
+def check_file(file_path):
     """Validates that the channels list in the given file only contains 'conda-forge'."""
     content = _read_yaml(file_path)
     is_conda_env = _is_conda_env(content)
@@ -52,24 +52,16 @@ def _check_conda_forge_only(file_path, channels):
         )
 
 
-def main():
-    """Entry point for the pre-commit hook."""
-    files = sys.argv[1:]
-
-    is_valid = []
+def check_files(files):
+    checks_passed = []
     for file_path in files:
         try:
-            validate_channels(file_path)
-            is_valid.append(True)
+            check_file(file_path)
+            checks_passed.append(True)
         except ValidationError as err:
-            is_valid.append(False)
+            checks_passed.append(False)
             print(err)
         except Exception as err:
             print(f"{file_path}: Unexpected error: {err}")
-            is_valid.append(False)
-
-    sys.exit(0 if all(is_valid) else 1)
-
-
-if __name__ == "__main__":
-    main()
+            checks_passed.append(False)
+    return checks_passed

@@ -1,5 +1,5 @@
 - id: conda-forge-only
-  name: Check channels list for conda-forge only
-  entry: python -m conda_forge_only.check_channels
+  name: conda-forge-only
+  entry: conda-forge-only
   language: python
-  files: \.(yml|yaml)$
+  types: [file, yaml]

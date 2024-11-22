@@ -1,20 +1,32 @@
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "conda-forge-only"
-version = "0.1.0"
-description = "A pre-commit hook to enforce only 'conda-forge' in YAML channel lists."
+description = "A pre-commit hook to make sure that only the 'conda-forge' channel is used in conda environment files."
 authors = [{ name = "Your Name", email = "your.email@example.com" }]
+requires-python = ">=3.7"
 dependencies = [
-    "pyyaml"
+    "pyyaml",
+    "click"
 ]
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
+dynamic = ["version"]
+
+[project.scripts]
+conda-forge-only = "conda_forge_only.cli:cli"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["conda-forge-only"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "conda-forge-only/version.py"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

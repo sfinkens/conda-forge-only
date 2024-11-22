@@ -3,6 +3,6 @@ repos:
     hooks:
       - id: conda-forge-only
         name: conda-forge-only
-        entry: python -m conda_forge_only.check_channels
+        entry: conda-forge-only
         language: system
         files: \.(yml|yaml)$
