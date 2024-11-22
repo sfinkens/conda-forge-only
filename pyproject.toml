@@ -20,13 +20,14 @@ build-backend = "hatchling.build"
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["conda-forge-only"]
+packages = ["conda_forge_only"]
 
 [tool.hatch.version]
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "conda-forge-only/version.py"
+version-file = "conda_forge_only/version.py"
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+[tool.coverage.run]
+relative_files = true
+omit = ["conda_forge_only/version.py"]
