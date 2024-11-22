@@ -2,49 +2,73 @@ import sys
 import yaml
 
 
+class ValidationError(Exception):
+    def __init__(self, filename, error_message):
+        self.filename = filename
+        self.error_message = error_message
+
+    def __str__(self):
+        return f"{self.filename}: {self.error_message}"
+
+
 def validate_channels(file_path):
     """Validates that the channels list in the given file only contains 'conda-forge'."""
+    content = _read_yaml(file_path)
+    is_conda_env = _is_conda_env(content)
+    if is_conda_env:
+        channels = _get_channels(file_path, content)
+        _check_conda_forge_only(file_path, channels)
+
+
+def _read_yaml(file_path):
     with open(file_path, 'r') as file:
         try:
             content = yaml.safe_load(file)
         except yaml.YAMLError as exc:
-            print(f"YAML parsing error in {file_path}: {exc}")
-            return False
+            raise ValidationError(file_path, f"YAML parsing error: {exc}")
+    return content
 
-    # Check that the "channels" key exists and is a list
-    is_conda_env = "name" in content and "dependencies" in content
-    if is_conda_env:
-        if "channels" not in content:
-            print(f"No 'channels' key found in {file_path}.")
-            return False
 
+def _is_conda_env(content):
+    return "name" in content and "dependencies" in content
+
+
+def _get_channels(file_path, content):
+    try:
         channels = content["channels"]
-        if not isinstance(channels, list):
-            print(f"'channels' in {file_path} is not a list.")
-            return False
+    except KeyError:
+        raise ValidationError(file_path, "No 'channels' key")
+    if not isinstance(channels, list):
+        raise ValidationError(file_path, f"'channels' is not a list")
+    return channels
 
-        # Validate that only "conda-forge" is present
-        if set(channels) != {"conda-forge"}:
-            print(
-                f"Invalid channels found in {file_path}: {', '.join(channels)}. "
-                f"Only 'conda-forge' is allowed."
-            )
-            return False
 
-    return True
-
+def _check_conda_forge_only(file_path, channels):
+    if set(channels) != {"conda-forge"}:
+        raise ValidationError(
+            file_path,
+            f"Invalid channels found: {channels}. "
+            f"Only 'conda-forge' is allowed."
+        )
 
 
 def main():
     """Entry point for the pre-commit hook."""
     files = sys.argv[1:]
-    all_valid = True
 
+    is_valid = []
     for file_path in files:
-        if not validate_channels(file_path):
-            all_valid = False
+        try:
+            validate_channels(file_path)
+            is_valid.append(True)
+        except ValidationError as err:
+            is_valid.append(False)
+            print(err)
+        except Exception as err:
+            print(f"{file_path}: Unexpected error: {err}")
+            is_valid.append(False)
 
-    sys.exit(0 if all_valid else 1)
+    sys.exit(0 if all(is_valid) else 1)
 
 
 if __name__ == "__main__":

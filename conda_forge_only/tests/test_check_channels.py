@@ -1,5 +1,6 @@
 import pytest
-from conda_forge_only.check_channels import validate_channels
+from conda_forge_only.check_channels import validate_channels, ValidationError
+from contextlib import nullcontext as does_not_raise
 
 
 def create_yaml_file(tmp_path, content):
@@ -14,7 +15,8 @@ def test_not_a_conda_env(tmp_path):
     foo: bar
     """
     file_path = create_yaml_file(tmp_path, content)
-    assert validate_channels(file_path) is True
+    with does_not_raise():
+        validate_channels(file_path)
 
 
 def test_valid_env(tmp_path):
@@ -26,7 +28,8 @@ def test_valid_env(tmp_path):
       - conda-forge
     """
     file_path = create_yaml_file(tmp_path, content)
-    assert validate_channels(file_path) is True
+    with does_not_raise():
+        validate_channels(file_path)
 
 
 def test_invalid_env_with_extra_channels(tmp_path):
@@ -39,7 +42,8 @@ def test_invalid_env_with_extra_channels(tmp_path):
       - conda-forge
     """
     file_path = create_yaml_file(tmp_path, content)
-    assert validate_channels(file_path) is False
+    with pytest.raises(ValidationError):
+        validate_channels(file_path)
 
 
 def test_invalid_env_no_channels_key(tmp_path):
@@ -49,7 +53,8 @@ def test_invalid_env_no_channels_key(tmp_path):
       - foo
     """
     file_path = create_yaml_file(tmp_path, content)
-    assert validate_channels(file_path) is False
+    with pytest.raises(ValidationError):
+        validate_channels(file_path)
 
 
 def test_invalid_env_channels_not_a_list(tmp_path):
@@ -60,4 +65,5 @@ def test_invalid_env_channels_not_a_list(tmp_path):
     channels: conda-forge
     """
     file_path = create_yaml_file(tmp_path, content)
-    assert validate_channels(file_path) is False
+    with pytest.raises(ValidationError):
+        validate_channels(file_path)
