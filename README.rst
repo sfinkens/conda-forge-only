@@ -17,7 +17,8 @@ Add the following lines to your project's ``.pre-commit-config.yaml``:
 
 .. code-block:: yaml
 
-    - repo: https://github.com/sfinkens/conda-forge-only
-      rev: v0.1.0
-      hooks:
-        - id: conda-forge-only
+    repos:
+      - repo: https://github.com/sfinkens/conda-forge-only
+        rev: v0.1.0
+        hooks:
+          - id: conda-forge-only
