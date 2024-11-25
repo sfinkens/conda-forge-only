@@ -7,6 +7,9 @@ conda-forge-only
 .. image:: https://codecov.io/gh/sfinkens/conda-forge-only/graph/badge.svg?token=5MMOU081WQ
     :target: https://codecov.io/gh/sfinkens/conda-forge-only
 
+.. image:: https://badge.fury.io/py/conda-forge-only.svg
+    :target: https://badge.fury.io/py/conda-forge-only
+
 
 A pre-commit hook to check that conda environment files use conda-forge only.
 
