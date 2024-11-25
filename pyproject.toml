@@ -1,6 +1,7 @@
 [project]
 name = "conda-forge-only"
-description = "A pre-commit hook to make sure that only the 'conda-forge' channel is used in conda environment files."
+readme = "README.md"
+description = "A pre-commit hook to check that conda environment files use conda-forge only."
 authors = [{ name = "conda-forge-only developers", email = "stephan.finkensieper@dwd.de" }]
 requires-python = ">=3.7"
 dependencies = [
