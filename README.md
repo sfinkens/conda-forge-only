@@ -1,6 +1,6 @@
 # conda-forge-only
 
-[![CI](https://github.com/sfinkens/conda-forge-only/actions/workflows/CI/badge.svg)](https://github.com/sfinkens/conda-forge-only/actions/workflows/ci.yml)
+[![CI](https://github.com/sfinkens/conda-forge-only/workflows/CI/badge.svg?branch=main)](https://github.com/sfinkens/conda-forge-only/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/sfinkens/conda-forge-only/graph/badge.svg?token=5MMOU081WQ)](https://codecov.io/gh/sfinkens/conda-forge-only)
 
 
