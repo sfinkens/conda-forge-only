@@ -1,5 +1,5 @@
 conda-forge-only
-===============
+================
 
 .. image:: https://github.com/sfinkens/conda-forge-only/workflows/CI/badge.svg
     :target: https://github.com/sfinkens/conda-forge-only/actions/workflows/ci.yml
