@@ -1,3 +1,5 @@
+"""Package initializer."""
+
 try:
     from conda_forge_only.version import version as __version__  # noqa
 except ModuleNotFoundError:  # pragma: no cover

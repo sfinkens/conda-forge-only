@@ -1,12 +1,18 @@
+"""Check channels in conda environment files."""
+
+import click
 import yaml
 
 
 class ValidationError(Exception):
+    """Exception raised if environment file fails a test."""
     def __init__(self, filename, error_message):
+        """Initialize the object."""
         self.filename = filename
         self.error_message = error_message
 
     def __str__(self):
+        """Get string representation."""
         return f"{self.filename}: {self.error_message}"
 
 
@@ -23,7 +29,7 @@ def check_file(file_path):
 
 
 def _read_yaml(file_path):
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         try:
             content = yaml.safe_load(file)
         except yaml.YAMLError as exc:
@@ -41,7 +47,7 @@ def _get_channels(file_path, content):
     except KeyError:
         raise ValidationError(file_path, "No 'channels' key")
     if not isinstance(channels, list):
-        raise ValidationError(file_path, f"'channels' is not a list")
+        raise ValidationError(file_path, "'channels' is not a list")
     return channels
 
 
@@ -63,8 +69,8 @@ def check_files(files):
             checks_passed.append(True)
         except ValidationError as err:
             checks_passed.append(False)
-            print(err)
+            click.echo(err)
         except Exception as err:
-            print(f"{file_path}: Unexpected error: {err}")
+            click.echo(f"{file_path}: Unexpected error: {err}")
             checks_passed.append(False)
     return checks_passed

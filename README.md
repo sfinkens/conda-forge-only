@@ -1,14 +1,14 @@
 # conda-forge-only
 
-A pre-commit hook to enforce that YAML channel lists contain only `conda-forge`.
+A pre-commit hook to check that conda environment files use conda-forge only.
 
 ## Usage
 
-Add to your `.pre-commit-config.yaml`:
+Add the following lines to your `.pre-commit-config.yaml`:
 
-```yaml   
-- repo: https://github.com/your-username/conda-forge-only
-  rev: v0.1.0  # Use the latest version tag
+```yaml
+- repo: https://github.com/sfinkens/conda-forge-only
+  rev: v0.1.0
   hooks:
     - id: conda-forge-only
 ```
