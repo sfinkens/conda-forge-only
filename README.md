@@ -1,7 +1,7 @@
 # conda-forge-only
 
 [![CI](https://github.com/sfinkens/conda-forge-only/workflows/CI/badge.svg?branch=main)](https://github.com/sfinkens/conda-forge-only/actions?query=workflow%3A%22CI%22)
-[![Coverage Status](https://coveralls.io/repos/github/sfinkens/conda-forge-only/badge.svg?branch=main)](https://coveralls.io/github/sfinkens/conda-forge-only?branch=main)
+[![codecov](https://codecov.io/gh/sfinkens/conda-forge-only/graph/badge.svg?token=5MMOU081WQ)](https://codecov.io/gh/sfinkens/conda-forge-only)
 
 
 A pre-commit hook to check that conda environment files use conda-forge only.
