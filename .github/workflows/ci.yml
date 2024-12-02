@@ -38,6 +38,6 @@ jobs:
           pytest --cov=conda_forge_only conda_forge_only/tests --cov-report=xml
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
